@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="user.mapper.ChatMapper">
+	<cache />
+	
+	<select id="getChatlistByRecent" resultType="ChatDTO" parameterType="map">
+		select * from chat3 where ((fromID =#{fromID} and toID=#{toID})or(fromID =#{toID} and toID=#{fromID})) and chatNo > (select max(chatNo)-#{chatNo} from chat3 where (fromID = #{fromID} and toID = #{toID}) or (fromID = #{toID} and toID = {fromID})) order by chatTime
+	</select>
+	
+	
+	<select id="getChatListbyID" resultType="ChatDTO" parameterType="map">
+		select * from chat3 where ((fromID =#{fromID} and toID=#{toID}) or (fromID =#{toID} and toID=#{fromID})) and chatNo > #{chatNo}  order by chatTime
+	</select>
+	
+	<select id="getChatlist" resultType="ChatDTO" parameterType="ChatDTO">
+		select * from chat3 
+	</select>
+	
+	<insert id="submit" parameterType="ChatDTO">
+		insert into chat3 values (chat_no_seq.nextval, #{fromID},#{toID}, #{chatContent}, sysdate, 0)
+	</insert>
+	
+	<update id="readChat" parameterType="ChatDTO">
+		update chat3 set chatRead = 1 where (fromID = #{toID} and toID = #{fromID})
+	</update>
+	
+	<update id="?" parameterType="ChatDTO">
+		update chat3 set chatRead = 1 where (fromID = #{toID} and toID = #{fromID})
+	</update>
+	
+	<select id="getAllUnleadChat" parameterType="String" resultType="chatDTO">
+		select count(chatNo) from chat3 where toID = #{userID} and chatLead = 0
+	</select>
+	
+</mapper>
