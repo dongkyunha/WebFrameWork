@@ -17,7 +17,7 @@ public class UserService {
 		return service;
 	}
 
-	public int register(HttpServletRequest request, HttpServletResponse response) throws Exception { // ê°??…
+	public int register(HttpServletRequest request, HttpServletResponse response) throws Exception { // ï¿½??ï¿½ï¿½
 		request.setCharacterEncoding("utf-8");
 
 		int re = -1;
@@ -30,16 +30,16 @@ public class UserService {
 		if (userID == null || userID.equals("") || userPassword == null || userPassword.equals("")
 				|| userPassword2 == null || userPassword2.equals("") || userName == null || userName.equals("")
 				|| userAge == null || userAge.equals("")) {
-			request.getSession().setAttribute("messageType", "?˜¤ë¥˜ë©”?„¸ì§?");
-			request.getSession().setAttribute("messageContent", "ëª¨ë“ ?‚´?š©?„ ?…? ¥?•˜?„¸?š”.");
+			request.getSession().setAttribute("messageType", "ì˜¤ë¥˜ë©”ì„¸ì§€");
+			request.getSession().setAttribute("messageContent", "ëª¨ë“ ë‚´ìš©ì„ ì…ë ¥í•˜ì„¸ìš”.");
 			response.sendRedirect("join.jsp");
 		} else if (dao.registerCheck(userID) == 0) {
-			request.getSession().setAttribute("messageType", "?˜¤ë¥˜ë©”?„¸ì§?");
-			request.getSession().setAttribute("messageContent", "?•„?´?””ê°? ì¡´ì¬?•©?‹ˆ?‹¤.");
+			request.getSession().setAttribute("messageType", "ì˜¤ë¥˜ë©”ì„¸ì§€");
+			request.getSession().setAttribute("messageContent", "ì•„ì´ë””ê°€ ì¡´ì¬í•©ë‹ˆë‹¤.");
 			response.sendRedirect("join.jsp");
 		} else if (!userPassword.equals(userPassword2)) {
-			request.getSession().setAttribute("messageType", "?˜¤ë¥˜ë©”?„¸ì§?");
-			request.getSession().setAttribute("messageContent", "ë¹„ë?ë²ˆí˜¸ê°? ?‹¤ë¦…ë‹ˆ?‹¤.");
+			request.getSession().setAttribute("messageType", "ì˜¤ë¥˜ë©”ì„¸ì§€");
+			request.getSession().setAttribute("messageContent", "ë¹„ë°€ë²ˆí˜¸ê°€ ë‹¤ë¦…ë‹ˆë‹¤.");
 			response.sendRedirect("join.jsp");
 		} else {
 			UserDTO userDao = new UserDTO();
@@ -52,27 +52,27 @@ public class UserService {
 
 			if (re > 0) {
 				request.getSession().setAttribute("userID", userID);
-				request.getSession().setAttribute("messageType", "?„±ê³µë©”?„¸ì§?");
-				request.getSession().setAttribute("messageContent", "?šŒ?›ê°??…?— ?„±ê³µí•˜???Šµ?‹ˆ?‹¤.");
+				request.getSession().setAttribute("messageType", "ì„±ê³µë©”ì„¸ì§€");
+				request.getSession().setAttribute("messageContent", "íšŒì›ê°€ì…ì— ì„±ê³µí•˜ì˜€ìŠµë‹ˆë‹¤.");
 				response.sendRedirect("index.jsp");
 			} else {
-				request.getSession().setAttribute("messageType", "?‹¤?Œ¨ë©”ì„¸ì§?");
-				request.getSession().setAttribute("messageContent", "?šŒ?›ê°??…?— ?‹¤?Œ¨?•˜???Šµ?‹ˆ?‹¤.");
+				request.getSession().setAttribute("messageType", "ì‹¤íŒ¨ë©”ì„¸ì§€");
+				request.getSession().setAttribute("messageContent", "íšŒì›ê°€ì…ì— ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤.");
 				response.sendRedirect("index.jsp");
 			}
 		}
 		return re;
 	}
 
-	public int login(HttpServletRequest request, HttpServletResponse response) throws Exception { // ë¡œê·¸?¸
+	public int login(HttpServletRequest request, HttpServletResponse response) throws Exception { // ë¡œê·¸?ï¿½ï¿½
 		request.setCharacterEncoding("utf-8");
 		String userID = request.getParameter("userID");
 		String userPassword = request.getParameter("userPassword");
 		int re = -1;
 
 		if (userID == null || userID.equals("") || userPassword == null || userPassword.equals("")) {
-			request.getSession().setAttribute("messageType", "?˜¤ë¥˜ë©”?„¸ì§?");
-			request.getSession().setAttribute("messageContent", "ëª¨ë“ ?‚´?š©?„ ?…? ¥?•´ì£¼ì„¸?š”.");
+			request.getSession().setAttribute("messageType", "ì˜¤ë¥˜ë©”ì„¸ì§€");
+			request.getSession().setAttribute("messageContent", "ëª¨ë“ ë‚´ìš©ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.");
 			response.sendRedirect("login.jsp");
 			return re;
 		} else {
@@ -80,26 +80,26 @@ public class UserService {
 			System.out.println(re);
 			System.out.println(dao);
 			if (re == -1) {
-				request.getSession().setAttribute("messageType", "?˜¤ë¥˜ë©”?„¸ì§?");
-				request.getSession().setAttribute("messageContent", "?•„?´?””ê°? ì¡´ì¬?•˜ì§??•Š?Šµ?‹ˆ?‹¤.");
+				request.getSession().setAttribute("messageType", "ì˜¤ë¥˜ë©”ì„¸ì§€");
+				request.getSession().setAttribute("messageContent", "ì•„ì´ë””ê°€ ì¡´ì¬í•˜ì§€ì•ŠìŠµë‹ˆë‹¤.");
 				response.sendRedirect("login.jsp");
 				return re;
 			} else if (re == 0) {
-				request.getSession().setAttribute("messageType", "?˜¤ë¥˜ë©”?„¸ì§?");
-				request.getSession().setAttribute("messageContent", "ë¹„ë?ë²ˆí˜¸ê°? ??ë¦½ë‹ˆ?‹¤.");
+				request.getSession().setAttribute("messageType", "ì˜¤ë¥˜ë©”ì„¸ì§€");
+				request.getSession().setAttribute("messageContent", "ë¹„ë°€ë²ˆí˜¸ê°€ í‹€ë¦½ë‹ˆë‹¤.");
 				response.sendRedirect("login.jsp");
 				return re;
 			} else {
 				request.getSession().setAttribute("userID", userID);
-				request.getSession().setAttribute("messageType", "?„±ê³µë©”?„¸ì§?");
-				request.getSession().setAttribute("messageContent", "ë¡œê·¸?¸ ?˜?—ˆ?Šµ?‹ˆ?‹¤.");
+				request.getSession().setAttribute("messageType", "ì„±ê³µë©”ì„¸ì§€");
+				request.getSession().setAttribute("messageContent", "ë¡œê·¸ì¸ ë˜ì—ˆìŠµë‹ˆë‹¤.");
 				response.sendRedirect("index.jsp");
 				return re;
 			}
 		}
 	}
 
-	public int registerCheck(HttpServletRequest request, HttpServletResponse response) throws Exception { // ?•„?´?”” ì¤‘ë³µ?—¬ë¶?ì²´í¬
+	public int registerCheck(HttpServletRequest request, HttpServletResponse response) throws Exception { // ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ì¤‘ë³µ?ï¿½ï¿½ï¿½?ì²´í¬
 		request.setCharacterEncoding("utf-8");
 
 		String userID = request.getParameter("userID");
@@ -111,7 +111,7 @@ public class UserService {
 		return re;
 	}
 
-	public ArrayList<UserDTO> listUser(HttpServletRequest request, HttpServletResponse response) throws Exception { // ?œ ??ë¶ˆëŸ¬?˜¤ê¸?
+	public ArrayList<UserDTO> listUser(HttpServletRequest request, HttpServletResponse response) throws Exception { // ?ï¿½ï¿½??ë¶ˆëŸ¬?ï¿½ï¿½ï¿½?
 		request.setCharacterEncoding("utf-8");
 
 		ArrayList<UserDTO> list = null;

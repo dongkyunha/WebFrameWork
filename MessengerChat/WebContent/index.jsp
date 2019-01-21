@@ -2,6 +2,12 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+	<%
+		String userID = null;
+		if (session.getAttribute("userID") != null) {
+			userID = (String) session.getAttribute("userID");
+		}
+	%>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale = 1">
@@ -10,16 +16,35 @@
 <title>Groupware(그룹웨어명)</title>
 <script src="jquery.js" type="text/javascript"></script>
 <script src="js/bootstrap.js"></script>
-
+<script type="text/javascript">
+	function getUnread() {
+		$.ajax({
+			type : "POST",
+			url : "./unleadChatList",
+			data : {
+				userID : '<%=userID%>'
+			},
+			success : function(result) {
+				if(result == 1){
+					showUnread(result);
+				}else{
+					showUnread('');
+				}
+			}
+		});
+	}
+	function getInfiniteUnread() {
+		setInterval(function() {
+			getUnread();
+		}, 3000);
+	}
+	function showUnread(result) {
+		$('#unread').html(result);
+	}
+</script>
 
 </head>
 <body>
-	<%
-		String userID = null;
-		if (session.getAttribute("userID") != null) {
-			userID = (String) session.getAttribute("userID");
-		}
-	%>
 	<nav class="navbar navbar-default">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed"
@@ -36,6 +61,7 @@
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="index.jsp">메인</a></li>
 				<li><a href="find.jsp">친구찾기</a></li>
+				<li><a href="box.jsp">메세지함<span id="unread" class="label label-info"></span></a></li>
 			</ul>
 			<%
 				if (userID == null) {
@@ -68,7 +94,6 @@
 			%>
 		</div>
 	</nav>
-
 	<%
 		String messageContent = null;
 		if (session.getAttribute("messageContent") != null) {
@@ -113,6 +138,19 @@
 	<%
 		session.removeAttribute("messageContent");
 			session.removeAttribute("messageType");
+		}
+	%>
+	
+	<%
+		if(userID != null){
+
+	%>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			getInfiniteUnread();
+		});
+	</script>
+	<%
 		}
 	%>
 </body>

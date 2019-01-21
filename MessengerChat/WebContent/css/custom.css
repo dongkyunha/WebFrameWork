@@ -269,8 +269,8 @@ a:hover {
 
 .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:hover,
 	.navbar-default .navbar-nav>.active>a:focus { /*선택된 네이게이션 마우스 색상 이벤트*/
-	color: white;
-	background-color: #1456b8;
+	color: #5bc0de;
+	background-color: #ffffff;
 }
 
 .navbar-default .navbar-nav>li>a { /*네비게이션 글자 기본 폰트 변경*/

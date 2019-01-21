@@ -87,9 +87,7 @@
 				}
 				var parsed = JSON.parse(data);
 				var result = parsed.result;
-				
-				
-				
+
 				for (var i = 0; i < result.length; i++) {
 					if(result[i][0].value == fromID){
 						result[i][0].value = "나";
@@ -122,10 +120,35 @@
 						'</div></div></div><hr>');
 		$('#chatList').scrollTop($('#chatList')[0].scrollHeight);
 	}
+	
 	function getInfiniteChat() {
 		setInterval(function() {
 			chatListFunction(lastID);
 		}, 2000);
+	}
+	function getUnread() {
+		$.ajax({
+			type : "POST",
+			url : "./unleadChatList",
+			data : {
+				userID : '<%=userID%>'
+			},
+			success : function(result) {
+				if(result == 1){
+					showUnread(result);
+				}else{
+					showUnread('');
+				}
+			}
+		});
+	}
+	function getInfiniteUnread() {
+		setInterval(function() {
+			getUnread();
+		}, 3000);
+	}
+	function showUnread(result) {
+		$('#unread').html(result);
 	}
 </script>
 
@@ -149,6 +172,7 @@
 			<ul class="nav navbar-nav">
 				<li><a href="index.jsp">메인</a></li>
 				<li><a href="find.jsp">친구찾기</a></li>
+				<li><a href="box.jsp">메세지함<span id="unread" class="label label-info"></span></a></li>
 			</ul>
 			<%
 				if (userID != null) {
@@ -260,8 +284,10 @@
 	%>
 	<script type="text/javascript">
 	$(document).ready(function() {
+		getUnread();
 		chatListFunction('ten');
 		getInfiniteChat();
+		getInfiniteUnread();
 	});
 	</script>
 	

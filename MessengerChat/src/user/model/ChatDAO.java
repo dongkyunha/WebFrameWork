@@ -109,30 +109,53 @@ public class ChatDAO {
 		return chatNolist;
 	}	
 
-	public int readChat(ChatDTO chatDto){
+	public void unleadChatUpdate(String fromID, String toID) {
+		// TODO Auto-generated method stub
 		SqlSession sqlsession = getSqlSessionFactiory().openSession();
-		int readchat = -1;
+		
+		int chatlist = -1;
 		
 		try {
-			readchat = sqlsession.getMapper(ChatMapper.class).readChat(chatDto);
+			chatlist = sqlsession.getMapper(ChatMapper.class).unleadUpdate(fromID, toID);
+			if(chatlist > 0){
+				sqlsession.commit();
+			}else{
+				sqlsession.rollback();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
 			sqlsession.close();
 		}
-		return readchat;
+		
 	}
-	public ArrayList<ChatDTO> getAllUnleadChat(String userID){
-		SqlSession sqlsession = getSqlSessionFactiory().openSession();
-		ArrayList<ChatDTO> unleadChat = null;
 		
+	public int unleadAllChatlist(String userID){
+		SqlSession sqlsession = getSqlSessionFactiory().openSession();
+
+		int unleadChatCount = 0;
 		try {
-			unleadChat = sqlsession.getMapper(ChatMapper.class).getAllUnleadChat(userID);
+			System.out.println(unleadChatCount);
+			unleadChatCount = sqlsession.getMapper(ChatMapper.class).unleadAllChatlist(userID);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
 			sqlsession.close();
 		}
-		return unleadChat;
+		return unleadChatCount;
+	}
+
+	public ArrayList<ChatDTO> getBox(String userID) {
+		SqlSession sqlsession = getSqlSessionFactiory().openSession();
+
+		ArrayList<ChatDTO> getchatlist = null;
+		try {
+			getchatlist = sqlsession.getMapper(ChatMapper.class).getChatlist(userID);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			sqlsession.close();
+		}
+		return getchatlist;
 	}
 }

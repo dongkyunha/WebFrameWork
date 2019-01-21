@@ -7,33 +7,33 @@
 <mapper namespace="user.mapper.ChatMapper">
 	<cache />
 	
-	<select id="getChatlistByRecent" resultType="ChatDTO" parameterType="map">
-		select * from chat3 where ((fromID =#{fromID} and toID=#{toID})or(fromID =#{toID} and toID=#{fromID})) and chatNo > (select max(chatNo)-#{chatNo} from chat3 where (fromID = #{fromID} and toID = #{toID}) or (fromID = #{toID} and toID = {fromID})) order by chatTime
+	<select id="getChatlistByRecent" parameterType="map" resultType="ChatDTO">
+		select * from chat3 where ((fromID =#{fromID} and toID=#{toID})or(fromID =#{toID} and toID=#{fromID})) and chatNo > (select max(chatNo)-#{chatNo} from chat3 where ((fromID = #{fromID} and toID = #{toID}) or (fromID = #{toID} and toID = #{fromID}))) order by chatTime
 	</select>
 	
-	
-	<select id="getChatListbyID" resultType="ChatDTO" parameterType="map">
+	<select id="getChatListbyID" parameterType="map" resultType="ChatDTO">
 		select * from chat3 where ((fromID =#{fromID} and toID=#{toID}) or (fromID =#{toID} and toID=#{fromID})) and chatNo > #{chatNo}  order by chatTime
-	</select>
-	
-	<select id="getChatlist" resultType="ChatDTO" parameterType="ChatDTO">
-		select * from chat3 
 	</select>
 	
 	<insert id="submit" parameterType="ChatDTO">
 		insert into chat3 values (chat_no_seq.nextval, #{fromID},#{toID}, #{chatContent}, sysdate, 0)
 	</insert>
 	
-	<update id="readChat" parameterType="ChatDTO">
-		update chat3 set chatRead = 1 where (fromID = #{toID} and toID = #{fromID})
+	<update id="unleadUpdate" parameterType="map">
+		update chat3 set chatLead = 1 where (fromID = #{toID} and toID = #{fromID})
 	</update>
 	
-	<update id="?" parameterType="ChatDTO">
-		update chat3 set chatRead = 1 where (fromID = #{toID} and toID = #{fromID})
-	</update>
+	<resultMap type="ChatDTO" id="Chatlist">
+		<result column="fromID" property="userID"/>
+		<result column="toID" property="userID"/>
+	</resultMap>
 	
-	<select id="getAllUnleadChat" parameterType="String" resultType="chatDTO">
-		select count(chatNo) from chat3 where toID = #{userID} and chatLead = 0
+	<select id="unleadAllChatlist" parameterType="String" resultMap="Chatlist">
+		select count(chatNo) from chat3 where toID = #{userID} and chatLead = 0;
+	</select>
+	
+	<select id="getChatlist" parameterType="String" resultMap="Chatlist">
+		select * from chat3 where chatNo IN (select max(chatNo) from chat3 where toID = #{userID} and fromID = #{userID} group by fromID,toID)
 	</select>
 	
 </mapper>
