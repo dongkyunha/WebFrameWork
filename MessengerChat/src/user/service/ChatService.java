@@ -136,10 +136,12 @@ public class ChatService {
 		
 	}
 	
-	public String getBox(String userID) throws Exception{
+	public String getBox(String userID){
 		StringBuffer result = new StringBuffer("");
-		ArrayList<ChatDTO> chatlist = dao.getBox(userID);
-
+		System.out.println(userID);
+		ArrayList<ChatDTO> chatlist = dao.getMessengerBox(userID);
+		System.out.println(chatlist);
+		
 		if(chatlist.size() == 0){
 			return "";
 		}

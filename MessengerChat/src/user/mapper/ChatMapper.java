@@ -17,5 +17,5 @@ public interface ChatMapper {
 
 		int unleadUpdate(@Param("fromID") String fromID,@Param("toID") String toID);
 		int unleadAllChatlist(String userID);
-		ArrayList<ChatDTO> getChatlist(String userID);
+		ArrayList<ChatDTO> getChatlist(@Param("userID")String userID);
 }

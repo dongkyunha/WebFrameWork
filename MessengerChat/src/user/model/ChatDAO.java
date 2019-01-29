@@ -145,12 +145,14 @@ public class ChatDAO {
 		return unleadChatCount;
 	}
 
-	public ArrayList<ChatDTO> getBox(String userID) {
+	public ArrayList<ChatDTO> getMessengerBox(String userID) {
 		SqlSession sqlsession = getSqlSessionFactiory().openSession();
 
 		ArrayList<ChatDTO> getchatlist = null;
 		try {
+			System.out.println(getchatlist);
 			getchatlist = sqlsession.getMapper(ChatMapper.class).getChatlist(userID);
+			System.out.println(getchatlist);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {

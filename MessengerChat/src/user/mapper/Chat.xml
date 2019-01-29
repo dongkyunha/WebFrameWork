@@ -23,17 +23,17 @@
 		update chat3 set chatLead = 1 where (fromID = #{toID} and toID = #{fromID})
 	</update>
 	
-	<resultMap type="ChatDTO" id="Chatlist">
+<!-- 	<resultMap type="ChatDTO" id="Chatlist">
 		<result column="fromID" property="userID"/>
 		<result column="toID" property="userID"/>
-	</resultMap>
+	</resultMap> -->
 	
-	<select id="unleadAllChatlist" parameterType="String" resultMap="Chatlist">
+	<select id="unleadAllChatlist" parameterType="String" resultType="ChatDTO">
 		select count(chatNo) from chat3 where toID = #{userID} and chatLead = 0;
 	</select>
 	
-	<select id="getChatlist" parameterType="String" resultMap="Chatlist">
-		select * from chat3 where chatNo IN (select max(chatNo) from chat3 where toID = #{userID} and fromID = #{userID} group by fromID,toID)
+	<select id="getChatlist" parameterType="String" resultType="ChatDTO">
+		select * from chat3 where chatNo IN (select max(chatNo) from chat3 where toID = #{userID} or fromID = #{userID} group by fromID,toID)
 	</select>
 	
 </mapper>

@@ -27,7 +27,7 @@ public class ChatBoxList extends HttpServlet {
 				String re = service.getBox(userID);
 				response.getWriter().write(re +"");
 			} catch (Exception e) {
-				System.out.println("¿À·ù¹ß»ı");
+				System.out.println("ì—ëŸ¬");
 				e.printStackTrace();
 			}
 		}
